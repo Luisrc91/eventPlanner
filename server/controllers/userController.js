@@ -42,7 +42,37 @@ const login = async (req, res) => {
   }
 };
 
+// update user
+const updateUser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const userId = req.user.userId;
+    let user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (username) {
+      const existingUser = await User.findOne({ where: { username } });
+      if (existingUser) {
+        return res.status(400).json({ error: "Username already taken" });
+      }
+      user.username = username;
+    }
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+    await user.save();
+    res.json({ message: "User updated successfully", user });
+  } catch (err) {
+    res.status(500).json({ error: "User update failed" });
+  }
+};
+
+// delete user
+
 module.exports = {
   register,
   login,
+  updateUser,
 };
