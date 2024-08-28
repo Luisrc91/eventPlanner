@@ -1,19 +1,16 @@
-// import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* Add other routes here */}
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
 };
 
 export default App;
-
-
- 
