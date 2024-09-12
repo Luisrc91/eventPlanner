@@ -42,10 +42,10 @@ const login = async (req, res) => {
     });
     res.json({ message: "Login successful", token });
   } catch (error) {
+    console.error("Error during login:", error);
     res.status(500).json({ error: "Login failed" });
   }
 };
-
 // update user
 const updateUser = async (req, res) => {
   try {
@@ -103,11 +103,28 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ error: "User deletion failed" });
   }
 };
+const getProfile = async (req, res) => {
+  try {
+    const userId = req.user.userId; // Extract userId from the authenticated request
+    const user = await User.findByPk(userId, {
+      attributes: { exclude: ["password"] } // Exclude password from the response
+    });
+    
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch profile" });
+  }
+};
 
 
 module.exports = {
   register,
   login,
   updateUser,
-  deleteUser
+  deleteUser, 
+  getProfile
 };
