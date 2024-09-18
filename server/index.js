@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const { sequelize } = require("./models");
 const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,6 +15,7 @@ app.use(cors());
 
 
 app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 // app.use('/events', eventRoutes);
 
 app.get("/", (req, res) => {

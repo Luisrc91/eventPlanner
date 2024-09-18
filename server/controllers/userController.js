@@ -37,9 +37,11 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    console.log('User login successful:', user.email);
+
+    // const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    //   expiresIn: "1h",
+    // });
     res.json({ message: "Login successful", token });
   } catch (error) {
     console.error("Error during login:", error);
@@ -122,8 +124,6 @@ const getProfile = async (req, res) => {
 
 
 module.exports = {
-  register,
-  login,
   updateUser,
   deleteUser, 
   getProfile
