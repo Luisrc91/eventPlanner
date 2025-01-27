@@ -1,58 +1,74 @@
-// /client/src/services/authService.js
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:5000/';
+const API_URL = "http://localhost:5000";
 
+// Register a new user
 export const register = async (userData) => {
-  const response = await axios.post(`${API_URL}/auth/register`, userData);
-  return response.data;
+  try {
+    const response = await axios.post(`${API_URL}/auth/register`, userData, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error during registration:", error);
+    throw error.response?.data || "Registration failed";
+  }
 };
 
-// export const signup = async (userData) => {
-//   const response = await axios.post(`${API_URL}/auth/signup`, userData);
-//   return response.data; 
-// };
-
+// Login a user
 export const login = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, userData);
     return response.data;
   } catch (error) {
-    console.error('Error during login request:', error);
-    throw error;
+    console.error("Error during login request:", error);
+    throw error.response?.data || "Login failed";
   }
 };
 
-
+// Update user details
 export const updateUser = async (userData, token) => {
-  const response = await axios.put(`${API_URL}/users/update`, userData, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
-};
-
-export const deleteUser = async (id, token) => {
-  const response = await axios.delete(`${API_URL}/users/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
-};
-
-export const logout = () => {
-  localStorage.removeItem('token');
-};
-
-export async function getProfile() {
-  const token = localStorage.getItem('token');
-  const response = await fetch('http://localhost:5000/users/profile', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch profile');
+  try {
+    const response = await axios.put(`${API_URL}/users/update`, userData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error.response?.data || "Update failed";
   }
+};
 
-  return await response.json();
-}
+// Delete a user
+export const deleteUser = async (id, token) => {
+  try {
+    const response = await axios.delete(`${API_URL}/users/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error.response?.data || "Deletion failed";
+  }
+};
+
+// Logout a user
+export const logout = () => {
+  localStorage.removeItem("token");
+};
+
+// Fetch the profile of the logged-in user
+export const getProfile = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No token found. Please log in.");
+
+  try {
+    const response = await axios.get(`${API_URL}/users/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    throw error.response?.data || "Failed to fetch profile";
+  }
+};

@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { register } from '../services/authServices.js'; 
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { register } from "../services/authServices.js";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    email: '',
+    username: "",
+    password: "",
+    email: "",
   });
 
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,13 +19,24 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setSuccess(false);
+
     try {
-      const register = await register(formData); // Make API call
-      // Handle success (e.g., redirect to login page after signup)
-      navigate('/login');
-    } catch (error) {
-      console.error('Error signing up:', error);
-      setError(error.response ? error.response.data.message : 'Something went wrong');
+      const response = await register(formData);
+      console.log("Registration response:", response);
+
+      if (response && response.message === "User registered successfully") {
+        setSuccess(true);
+        console.log("Navigating to login page...");
+        navigate("/login");
+      } else {
+        setError("Unexpected response from the server.");
+        console.error("Unexpected response:", response);
+      }
+    } catch (err) {
+      console.error("Error signing up:", err);
+      setError(err.response?.data?.error || "Something went wrong");
     }
   };
 
@@ -73,6 +85,11 @@ export default function Register() {
             Sign Up
           </button>
         </form>
+        {success && (
+          <p className="text-green-500 text-center mt-4">
+            Registration successful! Redirecting to login...
+          </p>
+        )}
         {error && <p className="text-red-500 text-center mt-4">{error}</p>}
       </div>
     </div>

@@ -10,7 +10,6 @@ const register = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ error: "Email already registered" });
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       email,
@@ -31,7 +30,6 @@ const login = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
