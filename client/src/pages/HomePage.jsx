@@ -13,7 +13,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <NavBar /> {/* Add NavBar component */}
+      <NavBar /> 
       <Home />
       <Login />
       <button onClick={handleRegisterClick}>Sign Up</button>
