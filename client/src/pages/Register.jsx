@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/authServices.js";
 
@@ -12,6 +12,15 @@ export default function Register() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect if the user is already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // If the user is already logged in, navigate to profile or home
+      navigate("/profile"); // or navigate("/") for home
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -106,3 +115,4 @@ export default function Register() {
     </div>
   );
 }
+
