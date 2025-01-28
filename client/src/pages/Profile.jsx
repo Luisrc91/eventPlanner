@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProfile } from "../services/authService";
+import { getProfile } from "../services/authServices";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);

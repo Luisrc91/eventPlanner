@@ -1,15 +1,22 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../services/authServices.js';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../services/authServices.js";
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/profile"); 
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,13 +26,14 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await login(formData);
-      // Store the token in localStorage
-      localStorage.setItem('token', response.token);
-      // Navigate to profile page after successful login
-      navigate('/profile');
+      localStorage.setItem("token", response.token);
+      navigate("/profile");
     } catch (error) {
-      console.error('Error logging in:', error);
-      setError('Invalid email or password. Please try again.');
+      console.error("Error logging in:", error);
+      setError(
+        error.response?.data?.error ||
+          "Invalid email or password. Please try again."
+      );
     }
   };
 

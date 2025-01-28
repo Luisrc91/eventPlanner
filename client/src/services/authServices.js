@@ -53,22 +53,22 @@ export const deleteUser = async (id, token) => {
 };
 
 // Logout a user
-export const logout = () => {
-  localStorage.removeItem("token");
-};
-
-// Fetch the profile of the logged-in user
 export const getProfile = async () => {
   const token = localStorage.getItem("token");
-  if (!token) throw new Error("No token found. Please log in.");
+  if (!token) {
+    throw new Error("No token found. Please log in.");
+  }
 
   try {
     const response = await axios.get(`${API_URL}/users/profile`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching profile:", error);
-    throw error.response?.data || "Failed to fetch profile";
+    console.error("Error fetching profile:", error.response?.data || error.message);
+    throw error.response?.data || { error: "Failed to fetch profile" };
   }
 };
+

@@ -7,6 +7,8 @@ import UpdatePassword from "./components/userupdate/UpdatePassword";
 import UpdateEmail from "./components/userupdate/UpdateEmail";
 import UpdateProfile from "./pages/UpdateProfile";
 import HomePage from "./pages/HomePage";
+import AuthRoute from "./components/AuthRoute";
+import Profile from './pages/Profile';
 
 const App = () => {
   return (
@@ -17,6 +19,8 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/updateUser" element={<UpdateProfile />} />
+        <Route path="/profile" element={<AuthRoute><Profile /></AuthRoute>} />
+
 
 
         <Route path="/update-username" element={<UpdateUser />} />
