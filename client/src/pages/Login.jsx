@@ -14,7 +14,7 @@ export default function Login() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/profile"); 
+      navigate("/profile");
     }
   }, [navigate]);
 
@@ -70,6 +70,26 @@ export default function Login() {
           >
             Login
           </button>
+          <div>
+            {" "}
+            <h3 className="text-sm text-center mt-4 text-gray-600">
+              Not a member?{" "}
+              <a
+                href="/register"
+                className="text-blue-500 hover:text-blue-700 font-semibold"
+              >
+                Click here to Sign up
+              </a>
+              <p className="text-sm text-center mt-2 text-gray-600">
+                <a
+                  // href="/forgot-password"
+                  className="text-blue-500 hover:text-blue-700 font-semibold"
+                >
+                  Forgot your password?
+                </a>
+              </p>
+            </h3>
+          </div>
         </form>
         {error && <p className="text-red-500 text-center mt-4">{error}</p>}
       </div>

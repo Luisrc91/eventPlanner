@@ -41,8 +41,8 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-lg">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
         <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -91,6 +91,17 @@ export default function Register() {
           </p>
         )}
         {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+        <div className="mt-4 text-center">
+          <h3 className="text-sm text-gray-600">
+            Already a member?{" "}
+            <a
+              href="/login"
+              className="text-blue-500 hover:text-blue-700 font-semibold"
+            >
+              Click here to Login
+            </a>
+          </h3>
+        </div>
       </div>
     </div>
   );
